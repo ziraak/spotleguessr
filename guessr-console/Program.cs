@@ -22,25 +22,20 @@ while (!isGuessed)
 
 
     possibleAnwsers = guessYear(chosen, possibleAnwsers);
-
     Console.WriteLine(possibleAnwsers.Count() + " possibilities");
-    Console.WriteLine(string.Join(", ", possibleAnwsers.Select(x => x.Name)));
+
     possibleAnwsers = guessSize(chosen, possibleAnwsers);
-
     Console.WriteLine(possibleAnwsers.Count() + " possibilities");
-    Console.WriteLine(string.Join(", ", possibleAnwsers.Select(x => x.Name)));
+
     possibleAnwsers = guessRank(chosen, possibleAnwsers);
-
     Console.WriteLine(possibleAnwsers.Count() + " possibilities");
-    Console.WriteLine(string.Join(", ", possibleAnwsers.Select(x => x.Name)));
+
     possibleAnwsers = guessGender(chosen, possibleAnwsers);
-
     Console.WriteLine(possibleAnwsers.Count() + " possibilities");
-    Console.WriteLine(string.Join(", ", possibleAnwsers.Select(x => x.Name)));
+
     possibleAnwsers = guessGenre(chosen, possibleAnwsers);
-
     Console.WriteLine(possibleAnwsers.Count() + " possibilities");
-    Console.WriteLine(string.Join(", ", possibleAnwsers.Select(x => x.Name)));
+
     possibleAnwsers = guessNationality(chosen, possibleAnwsers);
 
 
