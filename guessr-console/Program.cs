@@ -142,7 +142,7 @@ List<NewModel> guessGenre(NewModel chosenBand, List<NewModel> possibleAnswers)
 }
 List<NewModel> guessNationality(NewModel chosenBand, List<NewModel> possibleAnswers)
 {
-    Console.WriteLine($"was country {chosenBand.Country} f/c");
+    Console.WriteLine($"was country {chosenBand.Country} y/f/c");
     var answer = Console.ReadLine();
     switch (answer)
     {
@@ -150,7 +150,10 @@ List<NewModel> guessNationality(NewModel chosenBand, List<NewModel> possibleAnsw
             possibleAnswers = possibleAnswers.Where(x => x.Country == chosenBand.Country).ToList();
             break;
         case "f":
-            possibleAnswers = possibleAnswers.Where(x => x.Country != chosenBand.Country).ToList();
+            possibleAnswers = possibleAnswers.Where(x => x.Country != chosenBand.Country && x.Continent != chosenBand.Continent).ToList();
+            break;
+        case "y":
+            possibleAnswers = possibleAnswers.Where(x => x.Country != chosenBand.Country && x.Continent == chosenBand.Continent).ToList();
             break;
         default:
             return guessNationality(chosenBand, possibleAnwsers);
