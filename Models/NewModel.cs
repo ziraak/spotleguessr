@@ -15,6 +15,7 @@ namespace Models
 
         public Gender? Gender { get; set; }
         public string Name { get; set; }
+        public Continent? Continent { get; set; }
 
         public static List<NewModel> FromJson(string json) => JsonConvert.DeserializeObject<List<NewModel>>(json);
 
@@ -22,5 +23,16 @@ namespace Models
         {
             return $"name: {Name}, rank:{Rank}, gender:{Gender.ToString()}, from {Country}, genre:{Genre.ToString()}, size:{Size}, debut:{DebutAlbum}";
         }
+    }
+
+
+    public enum Continent
+    {
+        Africa,
+        Oceania,
+        Europe,
+        NorthAmerica,
+        SouthAmerica,
+        Asia
     }
 }
