@@ -286,22 +286,21 @@ internal class Program
     {
         Console.WriteLine("Hello, World!");
         var jsonList = LoadJson();
-        var finalList = new List<NewModel>();
+        var finalList = new List<Artist>();
 
-        for (int i = 0; i < jsonList.Length; i++)
+        foreach (var artist in jsonList)
         {
-            var model = jsonList[i];
             finalList.Add(
-                new NewModel()
+                new Artist()
                 {
-                    Name = model.Artist,
-                    Country = model.Country,
-                    DebutAlbum = (int)model.DebutAlbumYear,
-                    Gender = model.Gender,
-                    Genre = model.Genre,
-                    Size = (int)model.GroupSize,
-                    Rank = i + 1,
-                    Continent = GetContinent(model.Country)
+                    Name = artist.Artist,
+                    Country = artist.Country.ToLower(),
+                    DebutAlbum = (int)artist.DebutAlbumYear.GetYear(),
+                    Gender = artist.Gender,
+                    Genre = artist.Genre,
+                    Size = (int)artist.GroupSize,
+                    Rank = artist.Index + 1,
+                    Continent = GetContinent(artist.Country)
 
                 });
         }
@@ -330,7 +329,7 @@ internal class Program
 
     }
 
-    public static void WriteJsonAsync(List<NewModel> data)
+    public static void WriteJsonAsync(List<Artist> data)
     {
 
         string json = JsonConvert.SerializeObject(data.ToArray(), Formatting.Indented);
@@ -341,6 +340,7 @@ internal class Program
     }
     public static JsonModel[] LoadJson()
     {
+
         using (StreamReader r = new StreamReader("../../../../artists.json"))
         {
             string json = r.ReadToEnd();

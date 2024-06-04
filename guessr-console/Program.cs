@@ -2,7 +2,10 @@
 
 
 var artistList = LoadJson();
-List<NewModel> possibleAnwsers = artistList;
+List<Artist> possibleAnwsers = artistList;
+
+CountAttributes(possibleAnwsers);
+
 var isGuessed = false;
 
 Console.WriteLine("input: h = higher, l = lower, c = correct, f = false, y = yellow (for almost correct, so that would be yh for almost but higher)");
@@ -37,28 +40,105 @@ while (!isGuessed)
     Console.WriteLine(possibleAnwsers.Count() + " possibilities");
 
     possibleAnwsers = guessNationality(chosen, possibleAnwsers);
-
-
     Console.WriteLine(possibleAnwsers.Count() + " possibilities");
-    Console.WriteLine(string.Join(", ", possibleAnwsers.Select(x => x.Name)));
+
+    CountAttributes(possibleAnwsers);
 }
 
 
 
 
+void CountAttributes(List<Artist> artists)
+{
+    // Create dictionaries to store the count of each unique combination of attributes
+    Dictionary<string, int> genderCount = new Dictionary<string, int>();
+    Dictionary<string, int> countryCount = new Dictionary<string, int>();
+    Dictionary<string, int> genreCount = new Dictionary<string, int>();
+    Dictionary<string, int> sizeCount = new Dictionary<string, int>();
+    Dictionary<string, int> debutDecadeCount = new Dictionary<string, int>();
+    Dictionary<string, int> continentCount = new Dictionary<string, int>();
+
+    foreach (var artist in artists)
+    {
+        // Extract attributes for each artist
+        string genderKey = artist.Gender.ToString();
+        string countryKey = artist.Country;
+        string genreKey = artist.Genre.ToString();
+        string sizeKey = artist.Size.ToString();
+        string debutDecadeKey = artist.GetDebutAlbumDecade();
+        string continentKey = artist.Continent.ToString();
+
+        // Update count for each attribute
+        UpdateCount(genderCount, genderKey);
+        UpdateCount(countryCount, countryKey);
+        UpdateCount(genreCount, genreKey);
+        UpdateCount(sizeCount, sizeKey);
+        UpdateCount(debutDecadeCount, debutDecadeKey);
+        UpdateCount(continentCount, continentKey);
+    }
+
+    foreach (var artist in artists)
+    {
+        artist.Score = 0;
+        // Extract attributes for each artist
+        string genderKey = artist.Gender.ToString();
+        string countryKey = artist.Country;
+        string genreKey = artist.Genre.ToString();
+        string sizeKey = artist.Size.ToString();
+        string debutDecadeKey = artist.GetDebutAlbumDecade();
+        string continentKey = artist.Continent.ToString();
+
+        // Update count for each attribute
+        UpdateScore(genderCount, genderKey, artist);
+        UpdateScore(countryCount, countryKey, artist);
+        UpdateScore(genreCount, genreKey, artist);
+        UpdateScore(sizeCount, sizeKey, artist);
+        UpdateScore(debutDecadeCount, debutDecadeKey, artist);
+        UpdateScore(continentCount, continentKey, artist);
+    }
+
+    var MostLikelyArtist = artists.OrderByDescending(obj => obj.Score);
+    Console.WriteLine(string.Join(", ", MostLikelyArtist.Select(x => x.Name + ":" + x.Score)));
+    Console.WriteLine(MostLikelyArtist.FirstOrDefault().Name);
+}
 
 
-List<NewModel> LoadJson()
+
+// Function to update count in the dictionary
+void UpdateScore(Dictionary<string, int> dictionary, string key, Artist artist)
+{
+    if (dictionary.ContainsKey(key))
+    {
+        artist.Score += dictionary[key];
+    }
+}
+
+
+// Function to update count in the dictionary
+void UpdateCount(Dictionary<string, int> dictionary, string key)
+{
+    if (dictionary.ContainsKey(key))
+    {
+        dictionary[key]++;
+    }
+    else
+    {
+        dictionary[key] = 1;
+    }
+}
+
+
+List<Artist> LoadJson()
 {
     using (StreamReader r = new StreamReader("../../../../artists2.json"))
     {
         string json = r.ReadToEnd();
-        var items = NewModel.FromJson(json);
+        var items = Artist.FromJson(json);
         return items;
     }
 }
 
-List<NewModel> guessYear(NewModel chosenBand, List<NewModel> possibleAnswers)
+List<Artist> guessYear(Artist chosenBand, List<Artist> possibleAnswers)
 {
     Console.WriteLine($"was year {chosenBand.DebutAlbum} (y) h/l/c");
     var answer = Console.ReadLine();
@@ -85,7 +165,7 @@ List<NewModel> guessYear(NewModel chosenBand, List<NewModel> possibleAnswers)
 
     return possibleAnswers;
 }
-List<NewModel> guessSize(NewModel chosenBand, List<NewModel> possibleAnswers)
+List<Artist> guessSize(Artist chosenBand, List<Artist> possibleAnswers)
 {
     Console.WriteLine($"was bandsize {chosenBand.Size} f/c");
     var answer = Console.ReadLine();
@@ -103,7 +183,7 @@ List<NewModel> guessSize(NewModel chosenBand, List<NewModel> possibleAnswers)
 
     return possibleAnswers;
 }
-List<NewModel> guessGender(NewModel chosenBand, List<NewModel> possibleAnswers)
+List<Artist> guessGender(Artist chosenBand, List<Artist> possibleAnswers)
 {
     Console.WriteLine($"was gender {chosenBand.Gender} f/c");
     var answer = Console.ReadLine();
@@ -122,7 +202,7 @@ List<NewModel> guessGender(NewModel chosenBand, List<NewModel> possibleAnswers)
     return possibleAnswers;
 }
 
-List<NewModel> guessGenre(NewModel chosenBand, List<NewModel> possibleAnswers)
+List<Artist> guessGenre(Artist chosenBand, List<Artist> possibleAnswers)
 {
     Console.WriteLine($"was genre {chosenBand.Genre} f/c");
     var answer = Console.ReadLine();
@@ -140,7 +220,7 @@ List<NewModel> guessGenre(NewModel chosenBand, List<NewModel> possibleAnswers)
 
     return possibleAnswers;
 }
-List<NewModel> guessNationality(NewModel chosenBand, List<NewModel> possibleAnswers)
+List<Artist> guessNationality(Artist chosenBand, List<Artist> possibleAnswers)
 {
     Console.WriteLine($"was country {chosenBand.Country} y/f/c");
     var answer = Console.ReadLine();
@@ -162,7 +242,7 @@ List<NewModel> guessNationality(NewModel chosenBand, List<NewModel> possibleAnsw
     return possibleAnswers;
 }
 
-List<NewModel> guessRank(NewModel chosenBand, List<NewModel> possibleAnswers)
+List<Artist> guessRank(Artist chosenBand, List<Artist> possibleAnswers)
 {
     Console.WriteLine($"was rank {chosenBand.Rank} (y) h/l/c");
     var answer = Console.ReadLine();
@@ -190,7 +270,7 @@ List<NewModel> guessRank(NewModel chosenBand, List<NewModel> possibleAnswers)
     return possibleAnswers;
 }
 
-NewModel? GetGuess(List<NewModel> newModels)
+Artist? GetGuess(List<Artist> newModels)
 {
     while (true)
     {

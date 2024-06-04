@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonConverter", "JsonConver
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{C4CCD0A1-CF56-4223-831F-4CBC3535F34B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "guessr-console", "guessr-console\guessr-console.csproj", "{1B5EFC1B-7910-4040-9A4F-FBF836FC18FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "guessr-console", "guessr-console\guessr-console.csproj", "{1B5EFC1B-7910-4040-9A4F-FBF836FC18FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eliminateWords", "eliminateWords\eliminateWords.csproj", "{5719FC3B-B9FD-44AD-98B2-436DC825411F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{1B5EFC1B-7910-4040-9A4F-FBF836FC18FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B5EFC1B-7910-4040-9A4F-FBF836FC18FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B5EFC1B-7910-4040-9A4F-FBF836FC18FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5719FC3B-B9FD-44AD-98B2-436DC825411F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5719FC3B-B9FD-44AD-98B2-436DC825411F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5719FC3B-B9FD-44AD-98B2-436DC825411F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5719FC3B-B9FD-44AD-98B2-436DC825411F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
