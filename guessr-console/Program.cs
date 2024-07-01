@@ -12,7 +12,7 @@ internal class Program
         var artistList = LoadJson();
         List<Artist> possibleAnwsers = artistList;
 
-        CountAttributes(possibleAnwsers);
+
 
         var isGuessed = false;
 
@@ -20,8 +20,9 @@ internal class Program
 
         while (!isGuessed)
         {
+            var likely = CountAttributes(possibleAnwsers);
 
-            var chosen = GetGuess(artistList);
+            var chosen = GetGuess(artistList, likely);
 
             Console.WriteLine(chosen.WriteToConsole());
             Console.WriteLine("was this the band? y/n");
@@ -50,13 +51,12 @@ internal class Program
             possibleAnwsers = guessNationality(chosen, possibleAnwsers);
             Console.WriteLine(possibleAnwsers.Count() + " possibilities");
 
-            CountAttributes(possibleAnwsers);
         }
 
 
 
 
-        void CountAttributes(List<Artist> artists)
+        Artist CountAttributes(List<Artist> artists)
         {
             // Create dictionaries to store the count of each unique combination of attributes
             Dictionary<string, int> genderCount = new Dictionary<string, int>();
@@ -65,17 +65,18 @@ internal class Program
             Dictionary<string, int> sizeCount = new Dictionary<string, int>();
             Dictionary<string, int> debutDecadeCount = new Dictionary<string, int>();
             Dictionary<string, int> continentCount = new Dictionary<string, int>();
-
+            Dictionary<string, int> RankSectionCount = new Dictionary<string, int>();
 
             foreach (var artist in artists)
             {
                 // Extract attributes for each artist
-                string genderKey = artist.Gender.ToString();
-                string countryKey = artist.Country;
-                string genreKey = artist.Genre.ToString();
-                string sizeKey = artist.Size.ToString();
-                string debutDecadeKey = artist.GetDebutAlbumDecade();
-                string continentKey = artist.Continent.ToString();
+                var genderKey = artist.Gender.ToString();
+                var countryKey = artist.Country;
+                var genreKey = artist.Genre.ToString();
+                var sizeKey = artist.Size.ToString();
+                var debutDecadeKey = artist.GetDebutAlbumDecade();
+                var continentKey = artist.Continent.ToString();
+                var rankSectionKey = artist.GetRankSection();
 
                 // Update count for each attribute
                 UpdateCount(genderCount, genderKey);
@@ -84,6 +85,7 @@ internal class Program
                 UpdateCount(sizeCount, sizeKey);
                 UpdateCount(debutDecadeCount, debutDecadeKey);
                 UpdateCount(continentCount, continentKey);
+                UpdateCount(RankSectionCount, rankSectionKey);
             }
 
             foreach (var artist in artists)
@@ -96,6 +98,7 @@ internal class Program
                 string sizeKey = artist.Size.ToString();
                 string debutDecadeKey = artist.GetDebutAlbumDecade();
                 string continentKey = artist.Continent.ToString();
+                var rankSectionKey = artist.GetRankSection();
 
                 // Update count for each attribute
                 UpdateScore(genderCount, genderKey, artist);
@@ -104,11 +107,16 @@ internal class Program
                 UpdateScore(sizeCount, sizeKey, artist);
                 UpdateScore(debutDecadeCount, debutDecadeKey, artist);
                 UpdateScore(continentCount, continentKey, artist);
+                UpdateScore(RankSectionCount, rankSectionKey, artist);
             }
 
-            var MostLikelyArtist = artists.OrderByDescending(obj => obj.Score);
-            Console.WriteLine(string.Join(", ", MostLikelyArtist.Select(x => x.Name + ":" + x.Score)));
-            Console.WriteLine(MostLikelyArtist.LastOrDefault().Name);
+            var ScoredArtists = artists.OrderByDescending(obj => obj.Score);
+            Console.WriteLine(string.Join(", ", ScoredArtists.Select(x => x.Name + ":" + x.Score)));
+
+            var mostLikely = ScoredArtists.FirstOrDefault();
+            Console.WriteLine(mostLikely.Name);
+
+            return mostLikely;
         }
 
 
@@ -290,14 +298,18 @@ internal class Program
             return possibleAnswers;
         }
 
-        Artist? GetGuess(List<Artist> newModels)
+        Artist? GetGuess(List<Artist> newModels, Artist mostLikely)
         {
             while (true)
             {
-                Console.WriteLine("Type your guess");
+                Console.WriteLine("Type your guess, type l for most likely");
 
                 Console.Out.Flush();
                 var name = Console.ReadLine();
+                if (name == "l")
+                {
+                    return mostLikely;
+                }
 
                 var newModel = newModels.SingleOrDefault(x => string.Equals(x.Name, name, StringComparison.CurrentCultureIgnoreCase));
 

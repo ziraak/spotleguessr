@@ -293,7 +293,7 @@ internal class Program
             finalList.Add(
                 new Artist()
                 {
-                    Name = artist.Artist,
+                    Name = artist.GetArtistName(),
                     Country = artist.Country.ToLower(),
                     DebutAlbum = (int)artist.DebutAlbumYear.GetYear(),
                     Gender = artist.Gender,

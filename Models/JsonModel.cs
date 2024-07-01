@@ -33,6 +33,8 @@ namespace Models
         [JsonProperty("gender")]
         public Gender Gender { get; set; }
 
+        public string GetArtistName() => Artist.Split('(').FirstOrDefault().Trim();
+
         public Gender GetGender()
         {
             switch (Gender)

@@ -39,6 +39,16 @@ namespace Models
                 return "Unknown"; // Handle the case where DebutAlbum is not set
             }
         }
+
+        public string GetRankSection()
+        {
+            if (Rank == 0) return "unkown";
+
+            var tempRank = (double)Rank;
+            var section = Math.Ceiling(tempRank / 50) * 50;
+
+            return "" + section;
+        }
     }
 
 
